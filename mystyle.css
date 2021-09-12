@@ -1,0 +1,68 @@
+body {
+    background-image: url(background3.jpg);
+}
+
+#content { 
+
+    margin-top: 50px;
+
+    position: static;
+
+    width: 900px;
+    background-color: lightblue;
+    
+    margin-left: auto;
+    margin-right: auto;
+
+    overflow: auto;
+}
+
+#title {
+    float: left;
+
+    width: 65%; 
+    font-size: 14;
+    background-color: burlywood;
+    text-align: left;
+
+    padding-left: 5%;
+    padding-bottom: 5%;
+    box-sizing: border-box;
+
+    height: 550px;
+
+}
+
+#navigation {
+    float: right;
+    width: 35%;
+    text-align: center;
+    background-color: aquamarine;
+
+    height: 550px;
+}
+
+hr {
+    border: none;
+    color: black;
+    background-color: black;
+    height: 0.1ch;
+}
+
+#lab_page {
+
+    margin-top: 50px;
+
+    position: static;
+
+    width: 900px;
+    background-color: lightblue;
+    
+    margin-left: auto;
+    margin-right: auto;
+
+    overflow: auto;
+
+    padding: 3%;
+    box-sizing: border-box;
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../mystyle.css">
+    </head>
+    <body>
+        <div id="lab_page">
+            <center>
+                <h1>
+                    Лабораторна робота 1.
+                    <br>Використання рекурсії для організації повторювальних процесів.
+                    <br>Варіант 20
+                </h1>
+            </center>
+    
+            <h2>Автор</h2>
+            <table>
+                <tr><td>ПІБ:</td><td>Семечненко Тарас Олександрович</td></tr>
+                <tr><td>Курс:</td><td>4</td></tr>
+                <tr><td>Група:</td><td>ІПЗ-42</td></tr>
+                <tr><td>Рік навчання:</td><td>2021-2022</td></tr>
+            </table>
+
+            <h2>Мета</h2>
+            <p>Сформувати декларативне мислення в галузі програмування завдяки використанню чистих функцій, 
+                рекурсій замість циклів, запобіганню даних, що змінюються. 
+                Опанувати застосування рекурсивних функцій для обчислювальних процесів.</p>
+
+            <h2>Умова задачі</h2>
+
+            <h3>Задача 1</h3>
+            <p>Увести з клавіатури ціле число n та дійсне x. 
+                Обчислити значення поліному від x степені n за рекурентним співвідношенням:</p>
+            <img src="pic1.png">
+            <p>Реалізувати рекурсивний варіант розв'язку задачі. Визначити глибину рекурсії.</p>
+
+            <h3>Задача 2</h3>
+            <p>Використовуючи рекурсивні функції, перевірити, 
+                чи можна задане з клавіатури натуральне число представити у вигляді: 
+                <br>а) добутку двох простих чисел; 
+                <br>б) добутку трьох простих чисел; 
+                <br>в) квадрата будь-якого простого числа; 
+                <br>г) куба будь-якого простого числа
+            </p>
+
+            <h2>Структура програми</h2>
+            <h3>Блок-схема першого завдання</h3>
+            <img src="Untitled Diagram-Page-1.drawio.png", height=500>
+
+            <h3>Блок-схеми другого завдання</h3>
+            <p><i>Блок-схема функції, яка визначає чи є число простим:</i></p>
+            <img src="Untitled Diagram-Page-2.drawio.png", height=500>
+            <p><i>Блок-схема функції, яка визначає скільки простих дільників має число та функції
+                 які перевіряють чи має число 2 та 3 простих дільників:</i></p>
+            <img src="Untitled Diagram-Page-3.drawio.png", height=500>
+            <p><i>Блок схема функцій, які перевіряють чи є число квадратом та кубом простого числа:</i></p>
+            <img src="Untitled Diagram-Page-4.drawio.png", height=500>
+            <p><i>Блок-схема програми, яка зчитує число з консолі та перевіряє чи має воно 2 або 3 натуральні дільники, 
+                чи є воно квадратом або кубом простого числа:</i></p>
+            <img src="Untitled Diagram-Page-5.drawio.png", height=500>
+            
+            <h2>Обгрунтування вибору середовища та мови програмування</h2>
+            <p>
+                <h3>Середовище програмування: VS Code</h3>
+                Середовище обране через:
+                <br>1) Це моє основне середовище в якому програмую, 
+                і його можна використовувати майже для будь-якої мови програмування.
+                <br>2) Має всі необхідні функції для програмування 
+                і працює набагато швидше в порівнянні з іншими IDE.
+
+                <h3>Мова функціонального програмування: Haskell</h3>
+                Мова обрана через:
+                <br>1) Це одна з самих популярних та нових функціональних мов програмування.
+                <br>2) Дуже багата документація.
+                <br>3) Мова має дуже приємний та простий синтаксис.
+            </p> 
+
+            <h2>Код програми:</h2>
+            <h3>Завдання 1:</h3>
+
+            <xmp>
+    -- Polinom function
+    func :: Double -> Double -> Double
+    func 0 x = 0
+    func 1 x = 2 * x
+    func n x = ((2 * n) / (n - 1)) * (func (n - 1) x) + ((n - 1) / (2 * n)) * (func (n - 2) x)
+    
+    -- Main function
+    main = do 
+        putStrLn "Please input n:"
+        inputjar <- getLine
+        let n = read inputjar :: Double
+    
+        putStrLn "Please input x:"
+        inputjar <- getLine
+        let x = read inputjar :: Double
+    
+        putStrLn "Result:"
+        print (func n x)
+            </xmp>
+
+            <h3>Завдання 2:</h3>
+
+            <xmp>
+    -- is prime number function
+    is_prime_internal :: Integer -> Integer -> Bool
+    is_prime_internal num divider
+        | divider == 1 = True
+        | (num `mod` divider) == 0 = False 
+        | otherwise = is_prime_internal num (divider - 1)
+    
+    -- return true when value is prime
+    is_prime :: Integer -> Bool
+    is_prime num = is_prime_internal num (num - 1)
+    
+    -- get number of prime dividers
+    num_divisor_of_prime :: Integer -> Integer -> Integer -> Integer
+    num_divisor_of_prime num divider num_of_divs
+        | divider == 1 = num_of_divs
+        | ((num `mod` divider) == 0) && (is_prime divider) = num_divisor_of_prime 
+(num `div` divider) divider (num_of_divs + 1)
+        | otherwise = (num_divisor_of_prime num (divider - 1) num_of_divs)
+    
+    -- does number has 2 prime dividers
+    is_div_2 :: Integer -> Bool
+    is_div_2 num = (num_divisor_of_prime num (num - 1) 0) == 2
+    
+    -- does number has 3 prime dividers
+    is_div_3 :: Integer -> Bool
+    is_div_3 num = (num_divisor_of_prime num (num - 1) 0) == 3
+    
+    -- is number power of prime number to n
+    is_power_of_prime :: Integer -> Integer -> Integer -> Bool
+    is_power_of_prime num primary_num power
+        | (primary_num == 1) = False
+        | ((primary_num ^ power) == num) && (is_prime primary_num) = True
+        | otherwise = is_power_of_prime num (primary_num - 1) power
+    
+    -- is root of number is prime
+    is_pow_2 :: Integer -> Bool
+    is_pow_2 num = is_power_of_prime num num 2
+    
+    -- is third root of number is prime
+    is_pow_3 :: Integer -> Bool
+    is_pow_3 num = is_power_of_prime num num 3
+    
+    -- Main function
+    main = do 
+        putStrLn "Please enter value:"
+        inputjar <- getLine
+        let value = read inputjar :: Integer
+    
+        putStrLn "Is product of two numbers?"
+        print (is_div_2 value)
+    
+        putStrLn "Is product of three prime numbers?"
+        print (is_div_3 value)
+    
+        putStrLn "Is square of any prime number?"
+        print (is_pow_2 value)
+    
+        putStrLn "Is cube of any prime number?"
+        print (is_pow_3 value)
+    
+        putStrLn "Tests:"
+    
+        putStrLn "Should be True"
+        print (is_div_2 22)
+        print (is_div_2 9)
+        print (is_div_2 6)
+        print (is_div_3 30)
+        print (is_div_3 27)
+        print (is_div_3 12)
+        print (is_pow_2 4)
+        print (is_pow_2 9)
+        print (is_pow_2 25)
+        print (is_pow_2 49)
+        print (is_pow_2 121)
+        print (is_pow_3 8)
+        print (is_pow_3 27)
+        print (is_pow_3 125)
+    
+        putStrLn "Should be False"
+        print (is_div_2 2)
+        print (is_div_2 5)
+        print (is_div_2 7)
+        print (is_div_2 8)
+        print (is_div_2 24)
+        print (is_div_2 27)
+        print (is_div_3 32)
+        print (is_div_3 23)
+        print (is_div_3 29)
+        print (is_div_3 13)
+        print (is_pow_2 8)
+        print (is_pow_2 27)
+        print (is_pow_3 64)
+        print (is_pow_2 125)
+        print (is_pow_3 9)
+        print (is_pow_3 28)
+        print (is_pow_3 124)
+                
+            </xmp>
+
+            <h2>Посилання на проект з вихідним кодом</h2>
+            <a href="https://github.com/Gavair/Functional-Programming">
+                Посилання на весь проект
+            </a>
+            <br><a href="https://github.com/Gavair/Functional-Programming/blob/main/lab1/task1/task1.hs">
+                Посилання на код 1 завдання
+            </a>
+            <br><a href="https://github.com/Gavair/Functional-Programming/blob/main/lab1/task2/task2.hs">
+                Посилання на код 2 завдання
+            </a>
+
+            <h2>Скрін-шоти:</h2>
+            <h3>Результат виконання 1 програми:</h3>
+            <img src="screen1.png", height=100>
+            <p>Результати виконання програми співпадають з моїми розрахунками на калькуляторі</p>
+            <h3>Результат виконання 2 програми:</h3>
+            <img src="screen2.png", height=150>
+            <p>Результати виконання програми співпадають з розрахунками, 
+                так як число 9 є добутком двох простих чисал 3 * 3 і квадратом простого числа 3</p>
+            
+            <p>Також для 2 завдання були розроблені тести, кожен з яких програма проходить успішно.</p>
+
+            <h2>Висновки</h2>
+            <p>В л.р. було виконано 2 завдання:
+                <br><br>
+                В завданні #1 була написана рекурсивна функція, що рахувала значення поліному при заданих значеннях n та x.
+                Завдяки мові haskell реалізація цього поліному була дуже простою і рішення зайняло лише 4 строки.
+                Однак було досить важко перевірити результати виконання програми при великих значеннях n.
+                <br><br>
+                В завданні #2 були реалізовані 4 функції:
+                <br>а) чи є число добутком 2 простих чисел
+                <br>б) чи є число добутком 3 простих чисел
+                <br>в) чи є число квадратом простого числа
+                <br>г) чи є число кубом простого числа
+                <br>Всі вони були реалізовані рекурсивно. Для зменшення кількості коду я реалізував додаткові фукції, 
+                наприклад, функція, яка перевіряє чи є число простим.
+                <br><br>Також для 2 завдання були реалізовані тести, які перевіряють кожну з вище зазначених функцій.
+            </p>
+
+
+        </div>
+    </body>
+</html>
