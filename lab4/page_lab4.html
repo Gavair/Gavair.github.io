@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../mystyle.css">
+    </head>
+    <body>
+        <div id="lab_page">
+            <center>
+                <h1>
+                    Лабораторна робота 4.
+                    <br>Програмування списків мовами функціонального програмування.
+                    <br>Варіант 20
+                </h1>
+            </center>
+    
+            <h2>Автор</h2>
+            <table>
+                <tr><td>ПІБ:</td><td>Семечненко Тарас Олександрович</td></tr>
+                <tr><td>Курс:</td><td>4</td></tr>
+                <tr><td>Група:</td><td>ІПЗ-42</td></tr>
+                <tr><td>Рік навчання:</td><td>2021-2022</td></tr>
+            </table>
+
+            <h2>Зміст</h2>
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища та мови програмування</a></h3>
+            <h3><a href="#k5">Код програми</a></h3>
+            <h3><a href="#k6">Скрін-шоти</a></h3>
+            <h3><a href="#k7">Аналіз достовірності результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+
+            <h2><a name="k1">Мета</a></h2>
+            <p>Опанувати теоретичні основи використання списків функціональними мовами та розробити програми обробки списків.</p>
+
+            <h2><a name="k2">Умова задачі</a></h2>
+
+            <h3>Задача 1</h3>
+            <img src="pic1.png">
+
+            <h3>Задача 2</h3>
+            <img src="pic2.png">
+
+            <h2><a name="k3">Структура програми</a></h2>
+            <h3>Схема задачі 1</h3>
+            <img src="Untitled Diagram-lab4_1.drawio.png", height=300>
+
+            <h3>Схема задачі 2</h3>
+            <img src="Untitled Diagram-lab4_2.drawio.png", height=400>
+            
+            <h2><a name="k4">Обгрунтування вибору середовища та мови програмування</h2>
+            <p>
+                <h3>Середовище програмування: VS Code</h3>
+                Середовище обране через:
+                <br>1) Це моє основне середовище в якому програмую, 
+                і його можна використовувати майже для будь-якої мови програмування.
+                <br>2) Має всі необхідні функції для програмування 
+                і працює набагато швидше в порівнянні з іншими IDE.
+
+                <h3>Мова функціонального програмування: Haskell</h3>
+                Мова обрана через:
+                <br>1) Це одна з самих популярних та нових функціональних мов програмування.
+                <br>2) Дуже багата документація.
+                <br>3) Мова має дуже приємний та простий синтаксис.
+            </p> 
+
+            <h2><a name="k5">Код програми:</a></h2>
+            <h3>Завдання 1:</h3>
+
+            <xmp>
+find_first_element f index list
+    | (f (list !! index)) = index
+    | otherwise = (find_first_element f (index + 1) list)
+
+slice :: Int -> Int -> [a] -> [a]
+slice from to xs = take (to - from) (drop from xs)
+
+delete_zeros list = filter (\x -> x /= 0) list
+
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial 1 = 1
+factorial n = n * factorial (n - 1)
+
+is_factorial :: Integer -> Integer -> Bool
+is_factorial 1 _ = True
+is_factorial n prime_num
+    | (n <= 1) = False
+    | ((factorial prime_num) == n) = True
+    | ((factorial prime_num) > n) = False
+    | otherwise = is_factorial n (prime_num + 1)
+
+
+get_factorial_numbers list = filter (\x -> (is_factorial x 1)) list
+
+main = do 
+    let l = [1, 2, 10, -432, 6, 345, 0, -5, 24, 0]
+
+    let first_positive_id = find_first_element (\x -> x > 0) 0 l
+    let first_negative_id = find_first_element (\x -> x < 0) 0 l
+    let first_zero_id = find_first_element (\x -> x == 0) 0 l
+
+    putStrLn "Початковий масив:"
+    print l
+    let part1 = (slice (first_negative_id + 1) first_zero_id l)
+    let part2 = (slice (first_positive_id + 1) first_zero_id l)
+    let sublists = part1 ++ part2
+
+    putStrLn "а) Підсписок з елементів між першим від’ємним та нульовим елементом та між першим додатним та нульовим:"
+    print (sublists)
+    putStrLn "б) Без нульових елементів в списку:"
+    print (delete_zeros l)
+    putStrLn "в) Елементи, які є факторіалами числа:"
+    print (get_factorial_numbers l)
+            
+            </xmp>
+
+            <h3>Завдання 2:</h3>
+
+            <xmp>
+create_array fill_with 0 = []
+create_array fill_with 1 = [fill_with]
+create_array fill_with num = [fill_with] ++ (create_array fill_with (num - 1))
+
+time_for_each_ship num_of_ships
+| (num_of_ships `mod` 2 == 1) = (create_array 1 (num_of_ships - 1)) ++ [0.5]
+| otherwise = create_array 1 num_of_ships
+
+simulation queue index prev_ships result
+| ((length queue) - 1 == index) = result ++ (time_for_each_ship curr_ships)
+| (curr_ships >= 4) = simulation queue (index + 1) (curr_ships - 4) (result ++ [1, 1, 1, 1])
+| otherwise = simulation queue (index + 1) 0 (result ++ (time_for_each_ship curr_ships))
+where curr_ships = (length (queue !! index)) + prev_ships
+
+sim ships = simulation ships 0 0 []
+
+average list = (sum list) / (fromIntegral ((length list) :: Int))
+
+main = do 
+let ships = [[1, 2, 3, 4, 5], [6, 7], [8], [9, 10, 11]]
+let result = sim ships
+
+putStrLn "Перелік кораблів, що надходили в порт:"
+print $ ships
+
+putStrLn "Кількість днів, яка була витрачена на кожен корабель:"
+print $ result
+putStrLn "Мінімальна кількість днів:"
+print $ minimum result
+putStrLn "Середня кількість днів:"
+print $ average result
+putStrLn "Максимальна кількість днів:"
+print $ maximum result
+                            
+            </xmp>
+
+            <br><a href="https://github.com/Gavair/Gavair.github.io/blob/main/src/lab4/task1.hs">
+                Посилання на код 1 завдання
+            </a>
+            <br><a href="https://github.com/Gavair/Gavair.github.io/blob/main/src/lab4/task2.hs">
+                Посилання на код 2 завдання
+            </a>
+
+            <h2><a name="k6">Скрін-шоти:</a></h2>
+            <h3>Результат виконання 1 програми:</h3>
+            <img src="screen1.png", height=125>
+
+            <h3>Результат виконання 2 програми:</h3>
+            <img src="screen2.png", height=150>
+
+            <h2><a name="k7">Аналіз достовірності результатів</a></h2>
+            <p>
+                В першому завданні нам дано масив [1, 2, 10, -432, 6, 345, 0, -5, 24, 0]
+                <br>а) перший від'ємний елемент в цьому списку -432 і між першим нульовим елементов стоять 2 числа: 6 та 345
+                <br>перший додатній елемент 1 і між першим нульовим елементом знаходяться наступні числа: 2, 10, -432, 6, 345.
+                <br>Отже результат 6, 345, 2, 10, -432, 6, 345.
+                <br>б) якщо видалити всі нульові елементи, то результат буде: 1, 2, 10, -432, 6, 345, -5, 24
+                <br>в) в даному списку є 4 числа, які є факторіалами: 1 = 1!, 2 = 2!, 6 = 3!, 24 = 4!, отже відповідь 1, 2, 6, 24
+            </p>
+
+            <p>
+                В другому завданні в нас є масив кораблів які надходять в порт, і виглядає він наступним чином: [[1, 2, 3, 4, 5], [6, 7], [8], [9, 10, 11]].
+                <br>В даному масиві є підмасиви, які імітують надходження кораблів кожні 2 дні.
+                <br>Першого дня прийшло 5 кораблів, де перший день розвантажувались кораблі 1 та 2 (і це зайняло по 1 дню), 
+                <br>На 2 другий день розвантажувалися 3 та 4 корабель.
+                <br>На 3 день прийшли ще 6 та 7 корабель, однак в нас ще не розвантажився 5 корабель. Тому на 3 день будуть розвантажуватися 5 та 6 по 1 дню.
+                <br>На 4 день в нас залишиться 7 корабель, який буде розвантажуватися пів дня.
+                <br>На 5 день надходить коребель 8, який буде розвантажуватися пів дня
+                <br>На 6 день кораблів немає
+                <br>На 7 день приходить ще 3 корабля, де на 7 день будуть розвантажуватися 9 та 10 по 1 дню, а на 8 день буде розвантажуватися 11 корабель пів дня.
+                <br>Таким чином ми отримуємо масив в якому показано кількість днів на розвантаження кожного корабля в тому порядку в якому вони надходили.
+                <br>Потім ми знаходимо максимальне, мінімальне та середнє значення розвантаження.
+            </p>
+
+            <h2><a name="k8">Висновки</a></h2>
+            <p>В л.р. було виконано 2 завдання за допомогою мови Haskell.
+                <br>В першому завданні були реалізовані різні маніпуляції зі списком даних. Необхідно було реалізувати власні функції, які могли б отримувати підмасив елементів, видаляти необхідні значення та фільтрувати ці масиви.
+                <br>В другому завданні була реалізована симуляція розвантаження кораблів. Для того щоб відобразити надходження кораблів кожні 2 дні, я створив список списків, де кожен підсписок містить в назви кораблів, які надійшли певного дня. Завдяки чому можна було зручно описати симуляцію в якій розраховується кількість днів, які необхідно було витратити на розвантаження кожного корабля.
+            </p>
+        </div>
+    </body>
+</html>

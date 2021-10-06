@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../mystyle.css">
+    </head>
+    <body>
+        <div id="lab_page">
+            <center>
+                <h1>
+                    Лабораторна робота 7.
+                    <br>Обробка рядків та файлів мовами функціонального програмування.
+                    <br>Варіант 20
+                </h1>
+            </center>
+    
+            <h2>Автор</h2>
+            <table>
+                <tr><td>ПІБ:</td><td>Семечненко Тарас Олександрович</td></tr>
+                <tr><td>Курс:</td><td>4</td></tr>
+                <tr><td>Група:</td><td>ІПЗ-42</td></tr>
+                <tr><td>Рік навчання:</td><td>2021-2022</td></tr>
+            </table>
+
+            <h2>Зміст</h2>
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища та мови програмування</a></h3>
+            <h3><a href="#k5">Код програми</a></h3>
+            <h3><a href="#k6">Скрін-шоти</a></h3>
+            <h3><a href="#k7">Аналіз достовірності результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+
+            <h2><a name="k1">Мета</a></h2>
+            <p>Опанувати теоретичні основи обробки рядків та текстових файлів мовами функціонального програмування та розробити програми їх реалізації</p>
+
+            <h2><a name="k2">Умова задачі</a></h2>
+
+            <h3>Задача</h3>
+            <p>
+                Записати в текстовий файл n рядків тексту, що задаються програмою на функціональній мові програмування. Перевірити, чи є введений рядок ідентифікатором змінної відповідно до правил написання ідентифікаторів в алгоритмічних мовах програмування.
+                Зчитати рядки із створеного програмою файлу, вивести їх на екран. Записати в новий текстовий файл слова, які можуть бути ідентифікаторами змінних.              
+            </p>
+
+            <h2><a name="k3">Структура програми</a></h2>
+            <h3>Схема задачі</h3>
+            <img src="Untitled Diagram-lab7.drawio.png", height=250>
+            
+            <h2><a name="k4">Обгрунтування вибору середовища та мови програмування</h2>
+            <p>
+                <h3>Середовище програмування: VS Code</h3>
+                Середовище обране через:
+                <br>1) Це моє основне середовище в якому програмую, 
+                і його можна використовувати майже для будь-якої мови програмування.
+                <br>2) Має всі необхідні функції для програмування 
+                і працює набагато швидше в порівнянні з іншими IDE.
+
+                <h3>Мова функціонального програмування: Haskell</h3>
+                Мова обрана через:
+                <br>1) Це одна з самих популярних та нових функціональних мов програмування.
+                <br>2) Дуже багата документація.
+                <br>3) Мова має дуже приємний та простий синтаксис.
+            </p> 
+
+            <h2><a name="k5">Код програми:</a></h2>
+            <h3>Завдання 1:</h3>
+
+            <xmp>
+import System.IO  
+
+get_variable_name :: String -> Int -> String
+get_variable_name text index
+    | (index >= (length text) - 2) = ""
+    | ((text !! index) /= ' ') = [text !! index] ++ (get_variable_name text (index + 1))
+    | otherwise = ""
+
+get_variables :: String -> Int -> String
+get_variables text index
+    | (index >= (length text) - 3) = []
+    | (current_word == "let ") = get_variable_name text (index + 4) ++ ", " ++ (get_variables text (index + 1))
+    | otherwise = get_variables text (index + 1)
+    where current_word = [(text!!index)] ++ [(text!!(index + 1))] ++ [(text!!(index + 2))] ++ [(text!!(index + 3))]
+
+main = do 
+    let list = []
+    handle <- openFile "input.txt" ReadMode
+    contents <- hGetContents handle
+
+    let output = get_variables contents 0
+    writeFile "output.txt" output     
+            </xmp>
+
+            <br><a href="https://github.com/Gavair/Gavair.github.io/blob/main/src/lab7/task1.hs">
+                Посилання на код завдання
+            </a>
+
+            <h2><a name="k6">Скрін-шоти:</a></h2>
+            <h3>Результат виконання програми:</h3>
+            <p><b>Вхідні дані:</b></p>
+            <xmp>
+find_first_element f index list
+   | (f (list !! index)) = index
+   | otherwise = (find_first_element f (index + 1) list)
+
+slice :: Int -> Int -> [a] -> [a]
+slice from to xs = take (to - from) (drop from xs)
+
+delete_zeros list = filter (\x -> x /= 0) list
+
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial 1 = 1
+factorial n = n * factorial (n - 1)
+
+is_factorial :: Integer -> Integer -> Bool
+is_factorial 1 _ = True
+is_factorial n prime_num
+   | (n <= 1) = False
+   | ((factorial prime_num) == n) = True
+   | ((factorial prime_num) > n) = False
+   | otherwise = is_factorial n (prime_num + 1)
+   
+
+get_factorial_numbers list = filter (\x -> (is_factorial x 1)) list
+
+main = do 
+   let l = [1, 2, 10, -432, 6, 345, 0, -5, 24, 0]
+
+   let first_positive_id = find_first_element (\x -> x > 0) 0 l
+   let first_negative_id = find_first_element (\x -> x < 0) 0 l
+   let first_zero_id = find_first_element (\x -> x == 0) 0 l
+
+   putStrLn "Початковий масив:"
+   print l
+   let part1 = (slice (first_negative_id + 1) first_zero_id l)
+   let part2 = (slice (first_positive_id + 1) first_zero_id l)
+   let sublists = part1 ++ part2
+
+   putStrLn "а) Підсписок з елементів між першим від’ємним та нульовим елементом та між першим додатним та нульовим:"
+   print (sublists)
+   putStrLn "б) Без нульових елементів в списку:"
+   print (delete_zeros l)
+   putStrLn "в) Елементи, які є факторіалами числа:"
+   print (get_factorial_numbers l)
+            </xmp>
+            <p><b>Вихідні дані</b></p>
+
+            <xmp>
+l, first_positive_id, first_negative_id, first_zero_id, part1, part2, sublists, 
+            </xmp>
+
+            <h2><a name="k7">Аналіз достовірності результатів</a></h2>
+            <p>
+                В даному завданні необхідно було написати програму, яка б могла прочитати код програми знайти в ньому назви змінних та записати в інший файл.
+                Для виконання цього завдання я обрав код однієї з попередніх лабораторних робот, що була написана на мові Haskell.
+                В Haskell змінні об'являються за допомогою ключового слова let, де наступне слово це буде назва цієї самої змінної. 
+                В основному блоці програми ініціалізуються ці самі змінні, і програма їх всіх знайшла.
+            </p>
+            <h2><a name="k8">Висновки</a></h2>
+            <p>В л.р. було виконано завдання за допомогою мови Haskell.
+                <br>Була написана програма, яка читає текст з файла, знаходить всі ініціалізації змінних та виписує їх назви, після чого записує їх в інший файл.
+            </p>
+        </div>
+    </body>
+</html>

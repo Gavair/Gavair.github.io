@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../mystyle.css">
+    </head>
+    <body>
+        <div id="lab_page">
+            <center>
+                <h1>
+                    Лабораторна робота 6.
+                    <br>Обробка структур типу векторів і матриць, стеків та черг мовами функціонального програмування.
+                    <br>Варіант 20
+                </h1>
+            </center>
+    
+            <h2>Автор</h2>
+            <table>
+                <tr><td>ПІБ:</td><td>Семечненко Тарас Олександрович</td></tr>
+                <tr><td>Курс:</td><td>4</td></tr>
+                <tr><td>Група:</td><td>ІПЗ-42</td></tr>
+                <tr><td>Рік навчання:</td><td>2021-2022</td></tr>
+            </table>
+
+            <h2>Зміст</h2>
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища та мови програмування</a></h3>
+            <h3><a href="#k5">Код програми</a></h3>
+            <h3><a href="#k6">Скрін-шоти</a></h3>
+            <h3><a href="#k7">Аналіз достовірності результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+
+            <h2><a name="k1">Мета</a></h2>
+            <p>Обробка структур типу векторів і матриць, стеків та черг мовами функціонального програмування</p>
+
+            <h2><a name="k2">Умова задачі</a></h2>
+
+            <h3>Задача 1</h3>
+            <img src="pic1.png">
+
+            <h3>Задача 2</h3>
+            <img src="pic2.png">
+
+            <h2><a name="k3">Структура програми</a></h2>
+            <h3>Схема задачі 1</h3>
+            <img src="Untitled Diagram-lab6_1.drawio.png", height=400>
+
+            <h3>Схема задачі 2</h3>
+            <img src="Untitled Diagram-lab6_2.drawio.png", height=250>
+            
+            <h2><a name="k4">Обгрунтування вибору середовища та мови програмування</h2>
+            <p>
+                <h3>Середовище програмування: VS Code</h3>
+                Середовище обране через:
+                <br>1) Це моє основне середовище в якому програмую, 
+                і його можна використовувати майже для будь-якої мови програмування.
+                <br>2) Має всі необхідні функції для програмування 
+                і працює набагато швидше в порівнянні з іншими IDE.
+
+                <h3>Мова функціонального програмування: Haskell</h3>
+                Мова обрана через:
+                <br>1) Це одна з самих популярних та нових функціональних мов програмування.
+                <br>2) Дуже багата документація.
+                <br>3) Мова має дуже приємний та простий синтаксис.
+            </p> 
+
+            <h2><a name="k5">Код програми:</a></h2>
+            <h3>Завдання 1:</h3>
+
+            <xmp>
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+
+is_factorial :: Integer -> Integer -> Bool
+is_factorial n prime_num
+    | (n < 1) = False
+    | ((factorial prime_num) == n) = True
+    | ((factorial prime_num) > n) = False
+    | otherwise = is_factorial n (prime_num + 1)
+
+fib :: Integer -> Integer
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+
+is_fibonacci :: Integer -> Integer -> Bool
+is_fibonacci n prime_num
+    | (n < 0) = False
+    | ((fib prime_num) == n) = True
+    | ((fib prime_num) > n) = False
+    | otherwise = is_fibonacci n (prime_num + 1)
+
+is_sqrt :: Integer -> Integer -> Bool
+is_sqrt n prime_num
+    | (n < 0) = False
+    | (prime_num ^ 2 == n) = True
+    | (prime_num ^ 2 > n) = False
+    | otherwise = is_sqrt n (prime_num + 1)
+
+final_filter list = filter (\x -> (is_factorial x 1) || (is_fibonacci x 0) || (is_sqrt x 1)) list
+
+main = do 
+    let l = [1, 2, 10, -432, 6, 49, 345, 0, -5, 36, 24, 9, 0, 5, 8, 12, 100, 13]
+    
+    putStrLn "Початковий масив:"
+    print l
+
+    putStrLn "Елементи, які є числами фібоначі, факторіалами числа або квадратами числа:"
+    print (final_filter l)
+            </xmp>
+
+            <h3>Завдання 2:</h3>
+
+            <xmp>
+is_equal_triangle :: Double -> Double -> Double -> Bool
+is_equal_triangle a b c = (a == b) && (b == c)
+
+get_triangle_radius queue index
+    | (index >= (length queue) - 2) = []
+    | (is_equal == True) = [(queue !! index) * (sqrt 3) / 3] ++ (get_triangle_radius queue (index + 1))
+    | otherwise = get_triangle_radius queue (index + 1)
+    where is_equal = is_equal_triangle (queue !! index) (queue !! (index + 1)) (queue !! (index + 2))
+
+main = do 
+    let queue = [1, 2, 4, 2, 2, 2, 2, 4, 4, 4, 5, 4, 4, 4]
+    putStrLn $ "Список сторін:"
+    print queue
+
+    putStrLn $ "Список радіусів трикутників, які можна утворити з переліку"
+    print $ get_triangle_radius queue 0
+            </xmp>
+
+            <br><a href="https://github.com/Gavair/Gavair.github.io/blob/main/src/lab6/task1.hs">
+                Посилання на код 1 завдання
+            </a>
+            <br><a href="https://github.com/Gavair/Gavair.github.io/blob/main/src/lab6/task2.hs">
+                Посилання на код 2 завдання
+            </a>
+
+            <h2><a name="k6">Скрін-шоти:</a></h2>
+            <h3>Результат виконання 1 програми:</h3>
+            <img src="screen1.png", height=75>
+
+            <h3>Результат виконання 2 програми:</h3>
+            <img src="screen2.png", height=75>
+
+            <h2><a name="k7">Аналіз достовірності результатів</a></h2>
+            <p>
+                В першому завданні нам дано масив чисел: [1, 2, 10, -432, 6, 49, 345, 0, -5, 36, 24, 9, 0, 5, 8, 12, 100, 13]
+                <br>В якому числа фібоначі: 1, 2, 5, 8, 13
+                <br>факторіали чисел: 1, 2, 6, 24
+                <br>квадрати чисел: 1, 49, 0, 36, 9, 0, 100
+            </p>
+            <p>
+                В другому завданні в нас є черга з чисел: [1, 2, 4, 2, 2, 2, 2, 4, 4, 4, 3, 5, 5, 5]
+                <br>З цієї послідосності ми можемо виділити наступні рівносторонні трикутники:
+                <br>a) 2, 2, 2. Радіус = 2 * sqrt(3) / 3 = 1.15
+                <br>b) 2, 2, 2. Радіус = 2 * sqrt(3) / 3 = 1.15
+                <br>c) 4, 4, 4. Радіус = 4 * sqrt(3) / 3 = 2.30
+                <br>d) 5, 5, 5. Радіус = 5 * sqrt(3) / 3 = 2.88
+            </p>
+
+            <h2><a name="k8">Висновки</a></h2>
+            <p>В л.р. було виконано 2 завдання за допомогою мови Haskell.
+                <br>В першому завданні було реалізовано 3 функції: перша перевіряє чи є число факторіалом іншого числа, друга перевіряє чи є число квадратом іншого числа, а третя перевіряє чи є число в послідовності фібоначі. Скомпонувавши ці функції можна відфільтрувати вхідний масив даних і залишити тільки ті елементи, які виконують одну з трьох умов.
+                <br>В другому завданні була реалізована фукнція, яка перебирає кожне число з черги та дивиться, чи можна скласти рівносторонній трикутник з трьох послідовних значень. Для цього я реалізував 2 фукнції, де одна перебирає послідовність чисел, а інша дивиться чи можна з заданих трьох сторін скласти рівносторонній трикутник. В кінці програма повертає радіуси кіл, для знайдених трикутників.
+            </p>
+        </div>
+    </body>
+</html>
